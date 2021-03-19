@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.model.Post" %>
-<%@ page import="java.util.Collection" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -37,16 +37,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Post post : (Collection<Post>) request.getAttribute("posts")) { %>
-                    <tr>
-                        <td>
-                            <a href="<%=request.getContextPath()%>/post/edit.jsp?id=<%=post.getId()%>">
-                                <i class="fa fa-edit mr-3"></i>
-                            </a>
-                            <%=post.getName()%>
-                        </td>
-                    </tr>
-                    <% } %>
+                        <c:forEach items="${requestScope.posts}" var="post">
+                            <tr>
+                                <td>
+                                    <a href='<c:url value="/post/edit.jsp?id=${post.id}"/>'>
+                                        <i class="fa fa-edit mr-3"></i>
+                                    </a>
+                                    <c:out value="${post.name}"/>
+                                </td>
+                            </tr>
+                        </c:forEach>
                     </tbody>
                 </table>
             </div>
