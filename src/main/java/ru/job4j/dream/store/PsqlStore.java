@@ -115,6 +115,7 @@ public class PsqlStore implements Store {
         ) {
             ps.setInt(1, post.getId());
             ps.setString(2, post.getName());
+            ps.executeQuery();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -152,6 +153,7 @@ public class PsqlStore implements Store {
         ) {
             ps.setInt(1, candidate.getId());
             ps.setString(2, candidate.getName());
+            ps.executeQuery();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
