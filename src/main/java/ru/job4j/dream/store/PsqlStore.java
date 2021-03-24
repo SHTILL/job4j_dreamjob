@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.job4j.dream.model.User;
 
 public class PsqlStore implements Store {
     private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
@@ -84,6 +85,24 @@ public class PsqlStore implements Store {
             LOG.warn("Exception while retrieving candidates");
         }
         return posts;
+    }
+
+    @Override
+    public void save(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("INSERT INTO admins(name, email) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.execute();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    user.setId(id.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            LOG.warn("Exception while creating a new user");
+        }
     }
 
     @Override
@@ -160,6 +179,25 @@ public class PsqlStore implements Store {
         } catch (SQLException throwables) {
             LOG.warn("Exception while updating a candidate Id:" + candidate.getId());
         }
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("select * from admins where email = ?;"))
+        {
+            ps.setString(1, email);
+            ResultSet res = ps.executeQuery();
+            if (res.next()) {
+                User user = new User();
+                user.setId(res.getInt("id"));
+                user.setName(res.getString("name"));
+                return user;
+            }
+        } catch (SQLException e) {
+            LOG.warn("Exception while retrieving a user with email:" + email);
+        }
+        return null;
     }
 
     @Override
