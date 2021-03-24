@@ -14,8 +14,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PsqlStore implements Store {
+    private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
     private final BasicDataSource pool = new BasicDataSource();
 
     private PsqlStore() {
@@ -61,7 +64,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.warn("Exception while retrieving posts");
         }
         return posts;
     }
@@ -78,7 +81,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.warn("Exception while retrieving candidates");
         }
         return posts;
     }
@@ -104,7 +107,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.warn("Exception while creating a new post");
         }
         return post;
     }
@@ -117,7 +120,7 @@ public class PsqlStore implements Store {
             ps.setString(2, post.getName());
             ps.executeQuery();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            LOG.warn("Exception while updating a post Id" + post.getId());
         }
     }
 
@@ -142,7 +145,7 @@ public class PsqlStore implements Store {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.warn("Exception while creating a candidate");
         }
         return candidate;
     }
@@ -151,11 +154,11 @@ public class PsqlStore implements Store {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement("UPDATE candidate set name = ? where id = ?;")
         ) {
-            ps.setInt(1, candidate.getId());
-            ps.setString(2, candidate.getName());
-            ps.executeQuery();
+            ps.setString(1, candidate.getName());
+            ps.setInt(2, candidate.getId());
+            ps.executeUpdate();
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            LOG.warn("Exception while updating a candidate Id:" + candidate.getId());
         }
     }
 
@@ -170,7 +173,7 @@ public class PsqlStore implements Store {
                 return new Post(id, res.getString("name"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.warn("Exception while retrieving a post by Id:" + id);
         }
         return null;
     }
@@ -186,7 +189,7 @@ public class PsqlStore implements Store {
                 return new Candidate(id, res.getString("name"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.warn("Exception while retrieving a candidate by Id:" + id);
         }
         return null;
     }
