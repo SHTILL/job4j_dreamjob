@@ -24,10 +24,16 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Авторизация
+                Регистрация
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/auth.do" method="post">
+                <form action="<%=request.getContextPath()%>/reg.do" method="post">
+                    <div class="form-group">
+                        <label>Имя</label>
+                        <label>
+                            <input type="text" class="form-control" name="name">
+                        </label>
+                    </div>
                     <div class="form-group">
                         <label>Почта</label>
                         <label>
@@ -40,10 +46,7 @@
                             <input type="text" class="form-control" name="password">
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-primary">Войти</button>
-                </form>
-                <form action="<%=request.getContextPath()%>/reg.do">
-                    <button type="submit" class="btn btn-primary">Регистрация</button>
+                    <button type="submit" class="btn btn-primary">Зарегистрировать</button>
                 </form>
             </div>
         </div>

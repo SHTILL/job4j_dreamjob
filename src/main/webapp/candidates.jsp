@@ -67,12 +67,14 @@
                             </td>
                             <td>
                                 <img src="<c:url value='/download?name=${candidate.id}'/>" width="100px" height="100px" alt="No Image"/>
-                                <form action='<c:url value="/PhotoUpload.jsp?id=${candidate.id}"/>' method="post">
-                                    <button type="submit" class="btn btn-outline-secondary">Добавить</button>
-                                </form>
-                                <form action='<c:url value="/delete?id=${candidate.id}"/>' method="post">
-                                    <button type="submit" class="btn btn-outline-secondary">Удалить</button>
-                                </form>
+                                <div class="row">
+                                    <form action='<c:url value="/PhotoUpload.jsp?id=${candidate.id}"/>' method="post">
+                                        <button type="submit" class="btn btn-outline-secondary">Добавить</button>
+                                    </form>
+                                    <form action='<c:url value="/delete?id=${candidate.id}"/>' method="post">
+                                        <button type="submit" class="btn btn-outline-secondary">Удалить</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                         </c:forEach>

@@ -90,10 +90,11 @@ public class PsqlStore implements Store {
     @Override
     public void save(User user) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("INSERT INTO admins(name, email) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)
+             PreparedStatement ps =  cn.prepareStatement("INSERT INTO admins(name, email, password) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -192,6 +193,7 @@ public class PsqlStore implements Store {
                 User user = new User();
                 user.setId(res.getInt("id"));
                 user.setName(res.getString("name"));
+                user.setPassword(res.getString("password"));
                 return user;
             }
         } catch (SQLException e) {
