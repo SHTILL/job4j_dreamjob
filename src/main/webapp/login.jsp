@@ -31,13 +31,13 @@
                     <div class="form-group">
                         <label>Почта</label>
                         <label>
-                            <input type="text" class="form-control" name="email">
+                            <input type="email" class="form-control" name="email">
                         </label>
                     </div>
                     <div class="form-group">
                         <label>Пароль</label>
                         <label>
-                            <input type="text" class="form-control" name="password">
+                            <input type="password" class="form-control" name="password">
                         </label>
                     </div>
                     <button type="submit" class="btn btn-primary">Войти</button>
