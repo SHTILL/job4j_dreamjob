@@ -42,6 +42,8 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Войти</button>
                 </form>
+            </div>
+            <div class="card-body">
                 <form action="<%=request.getContextPath()%>/reg.do">
                     <button type="submit" class="btn btn-primary">Регистрация</button>
                 </form>
