@@ -7,22 +7,50 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        function validate() {
+            const name = $('#name')
+            const surname = $('#surname')
+            const sex = $('#sex')
+            const description = $('#description')
+            if(name.val() === '') {
+                alert(name.attr('title'))
+                return false;
+            }
+            if(surname.val() === '') {
+                alert(surname.attr('title'))
+                return false;
+            }
+            if(sex.val() === '') {
+                alert(sex.attr('title'))
+                return false;
+            }
+            if(description.val() === '') {
+                alert(description.attr('title'))
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
 
 <div class="container-fluid">
     <h1>My First Bootstrap Page</h1>
     <p>This is some text.</p>
-    <div class="form-group">
-        <label for="name">Имя:</label>
-        <input type="text" class="form-control" id="name">
-        <label for="surname">Фамилия:</label>
-        <input type="text" class="form-control" id="surname">
-        <label for="sex">Пол:</label>
-        <input type="text" class="form-control" id="sex">
-        <label for="description">Описание:</label>
-        <input type="text" class="form-control" id="description">
-    </div>
+    <form>
+        <div class="form-group">
+            <label for="name">Имя:</label>
+            <input type="text" class="form-control" title="Enter user name." id="name">
+            <label for="surname">Фамилия:</label>
+            <input type="text" class="form-control" title="Enter user surname." id="surname">
+            <label for="sex">Пол:</label>
+            <input type="text" class="form-control" title="Enter user sex." id="sex">
+            <label for="description">Описание:</label>
+            <input type="text" class="form-control" title="Enter user description." id="description">
+            <button type="button" class="btn btn-default" onclick="return validate();">Submit</button>
+        </div>
+    </form>
     <div class="table-bordered">
         <table class="table">
             <thead>
