@@ -33,14 +33,6 @@
     <filter-name>AuthFilter</filter-name>
     <url-pattern>/delete</url-pattern>
   </filter-mapping>
-  <filter-mapping>
-    <filter-name>AuthFilter</filter-name>
-    <url-pattern>/candidate/edit.jsp</url-pattern>
-  </filter-mapping>
-  <filter-mapping>
-    <filter-name>AuthFilter</filter-name>
-    <url-pattern>/post/edit.jsp</url-pattern>
-  </filter-mapping>
 
   <servlet>
     <servlet-name>PostServlet</servlet-name>
