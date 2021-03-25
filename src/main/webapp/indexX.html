@@ -32,6 +32,20 @@
             return true;
         }
     </script>
+    <script>
+        function addRow() {
+            const name = $('#name')
+            const surname = $('#surname')
+            const sex = $('#sex')
+            const description = $('#description')
+            if (validate() === true) {
+                $('#usersData tbody tr:last').after('<tr><td>' + name.val() + '</td>' +
+                                            '<td>' + surname.val() + '</td>' +
+                                            '<td>' + sex.val() + '</td>' +
+                                            '<td>' + description.val() + '</td></tr>');
+            }
+        }
+    </script>
 </head>
 <body>
 
@@ -48,25 +62,25 @@
             <input type="text" class="form-control" title="Enter user sex." id="sex">
             <label for="description">Описание:</label>
             <input type="text" class="form-control" title="Enter user description." id="description">
-            <button type="button" class="btn btn-default" onclick="return validate();">Submit</button>
+            <button type="button" class="btn btn-default" onclick="return addRow();">Submit</button>
         </div>
     </form>
     <div class="table-bordered">
-        <table class="table">
+        <table class="table" id="usersData">
             <thead>
             <tr>
-                <th scope="col">Колонка1</th>
-                <th scope="col">Колонка2</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Фамилия</th>
+                <th scope="col">Пол</th>
+                <th scope="col">Описание</th>
             </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><p>A11.</p></td>
-                    <td><p>A12.</p></td>
-                </tr>
-                <tr>
-                    <td><p>A21.</p></td>
-                    <td><p>A22.</p></td>
+                    <td>Фёдор</td>
+                    <td>Достаевский</td>
+                    <td>Мужской</td>
+                    <td>Писатель</td>
                 </tr>
             </tbody>
         </table>
