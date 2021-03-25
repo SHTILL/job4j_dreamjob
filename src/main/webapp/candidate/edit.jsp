@@ -46,7 +46,7 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp"> <%= ((User)session.getAttribute("user")).getName()%> | Выйти</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">${empty sessionScope.user ? '' : sessionScope.user.name}  | Выйти</a>
             </li>
         </ul>
     </div>
