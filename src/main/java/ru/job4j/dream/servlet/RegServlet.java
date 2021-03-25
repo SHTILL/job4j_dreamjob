@@ -16,7 +16,7 @@ public class RegServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
@@ -30,6 +30,7 @@ public class RegServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/auth.do");
             return;
         }
-        resp.sendRedirect(req.getContextPath() + "/reg.do");
+        req.setAttribute("error", "Такой пользователь уже сущаствует");
+        req.getRequestDispatcher("reg.jsp").forward(req, resp);
     }
 }

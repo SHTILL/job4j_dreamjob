@@ -48,6 +48,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Зарегистрировать</button>
                 </form>
+                <p style="color:red;">${empty requestScope.error ? '' : requestScope.error}</p>
             </div>
         </div>
     </div>
