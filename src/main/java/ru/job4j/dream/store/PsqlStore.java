@@ -2,6 +2,7 @@ package ru.job4j.dream.store;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Post;
 
 import java.io.BufferedReader;
@@ -74,11 +75,14 @@ public class PsqlStore implements Store {
     public Collection<Candidate> findAllCandidates() {
         List<Candidate> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM candidate")
+             PreparedStatement ps =  cn.prepareStatement("SELECT candidate.id as id," +
+                     "candidate.name as name," +
+                     "cities.name as city " +
+                     "FROM candidate join cities on candidate.city_id = cities.id")
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    posts.add(new Candidate(it.getInt("id"), it.getString("name")));
+                    posts.add(new Candidate(it.getInt("id"), it.getString("name"), it.getString("city")));
                 }
             }
         } catch (Exception e) {
@@ -155,9 +159,11 @@ public class PsqlStore implements Store {
 
     private Candidate create(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("INSERT INTO candidate(name) VALUES (?)", PreparedStatement.RETURN_GENERATED_KEYS)
+             PreparedStatement ps =  cn.prepareStatement("INSERT INTO candidate(name, city_id)" +
+                     "VALUES (?, (SELECT id from public.cities where name = ?))", PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
+            ps.setString(2, candidate.getCity());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -172,10 +178,12 @@ public class PsqlStore implements Store {
 
     private void update(Candidate candidate) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("UPDATE candidate set name = ? where id = ?;")
+             PreparedStatement ps =  cn.prepareStatement("UPDATE candidate set name = ?," +
+                     "city_id = (SELECT id from public.cities where name = ?) where id = ?;")
         ) {
             ps.setString(1, candidate.getName());
-            ps.setInt(2, candidate.getId());
+            ps.setString(2, candidate.getCity());
+            ps.setInt(3, candidate.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             LOG.warn("Exception while updating a candidate Id:" + candidate.getId() + e);
@@ -221,16 +229,37 @@ public class PsqlStore implements Store {
     @Override
     public Candidate findCandidateById(int id) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps = cn.prepareStatement("select * from candidate where id = ?;"))
+             PreparedStatement ps =  cn.prepareStatement("SELECT candidate.id as id," +
+                     "candidate.name as name," +
+                     "cities.name as city FROM candidate join cities on candidate.city_id = cities.id"))
         {
             ps.setInt(1, id);
             ResultSet res = ps.executeQuery();
             if (res.next()) {
-                return new Candidate(id, res.getString("name"));
+                return new Candidate(id, res.getString("name"), res.getString("city"));
             }
         } catch (SQLException e) {
             LOG.warn("Exception while retrieving a candidate by Id:" + id + e);
         }
         return null;
+    }
+
+    @Override
+    public List<City> findAllCity() {
+        List<City> cities = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("select * from cities"))
+        {
+            ResultSet res = ps.executeQuery();
+            while (res.next()) {
+                City c = new City();
+                c.setId(res.getInt("id"));
+                c.setName(res.getString("name"));
+                cities.add(c);
+            }
+        } catch (SQLException e) {
+            LOG.warn("Exception while retrieving cities", e);
+        }
+        return cities;
     }
 }
