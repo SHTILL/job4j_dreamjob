@@ -12,24 +12,23 @@
 
 <script>
     function dumpPassword() {
-        const req = $.ajax({
-            type: 'GET',
+        const emailInput = $('#exampleInputEmail1').val()
+        const req = $.post({
             url: 'http://localhost:8080/dreamjob/dumpPasswords',
-            data: 'data=' + $('#exampleInputEmail1').val(),
-            dataType: 'text',
-            mimeType: 'application/json',
+            data: 'data=' + JSON.stringify({email: emailInput}),
+            dataType: "json"
         });
         req.done(function(data) {
-            alert(data)
+            alert(JSON.stringify(data))
         });
         req.fail(function(data) {
-            alert("Fail" + data);
+            alert("Failed" + data);
         });
     }
 </script>
 
 <div class="container">
-    <form id="emailForm">
+    <form id="emailForm" enctype="multipart/form-data">
         <div class="form-group">
             <label for="exampleInputEmail1">Email address</label>
             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
