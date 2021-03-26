@@ -144,7 +144,7 @@ public class PsqlStore implements Store {
             ps.setString(2, post.getName());
             ps.executeQuery();
         } catch (SQLException e) {
-            LOG.warn("Exception while updating a post Id" + post.getId() + e);
+            LOG.warn("Exception while updating a post Id" + post.getId(), e);
         }
     }
 
@@ -186,7 +186,7 @@ public class PsqlStore implements Store {
             ps.setInt(3, candidate.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOG.warn("Exception while updating a candidate Id:" + candidate.getId() + e);
+            LOG.warn("Exception while updating a candidate Id:" + candidate.getId(), e);
         }
     }
 
@@ -205,7 +205,7 @@ public class PsqlStore implements Store {
                 return user;
             }
         } catch (SQLException e) {
-            LOG.warn("Exception while retrieving a user with email:" + email + e);
+            LOG.warn("Exception while retrieving a user with email:" + email, e);
         }
         return null;
     }
@@ -221,7 +221,7 @@ public class PsqlStore implements Store {
                 return new Post(id, res.getString("name"));
             }
         } catch (SQLException e) {
-            LOG.warn("Exception while retrieving a post by Id:" + id + e);
+            LOG.warn("Exception while retrieving a post by Id:" + id, e);
         }
         return null;
     }
@@ -239,7 +239,7 @@ public class PsqlStore implements Store {
                 return new Candidate(id, res.getString("name"), res.getString("city"));
             }
         } catch (SQLException e) {
-            LOG.warn("Exception while retrieving a candidate by Id:" + id + e);
+            LOG.warn("Exception while retrieving a candidate by Id:" + id, e);
         }
         return null;
     }
