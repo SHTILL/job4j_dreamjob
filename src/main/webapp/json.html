@@ -13,7 +13,8 @@
 <script>
     function dumpPassword() {
         const emailInput = $('#exampleInputEmail1').val()
-        const req = $.post({
+        const req = $.ajax({
+            type: 'POST',
             url: 'http://localhost:8080/dreamjob/dumpPasswords',
             data: 'data=' + JSON.stringify({email: emailInput}),
             dataType: "json"
